@@ -40,7 +40,9 @@ module.exports = app => {
     timezone: '+08:00',
     // 格式化返回的数据结构
     dialectOptions: {
+      // 获取日期信息的时候转换成Date对象
       dateStrings: true,
+      // 取数据的时候将数据库的类型转换成TypeORM的类型
       typeCast: true
     }
   }
@@ -76,6 +78,17 @@ module.exports = app => {
     }
   }
 
+    // 设置白名单
+    const port = 9001 // 前端端口，跟随实际情况修改
+    const domainWhiteList = [
+      ...new Set([
+        `http://127.0.0.1:${port}`,
+        `http://localhost:${port}`,
+        // 服务启动时尝试自动获取本机 IP 设置白名单
+        `http://${getLocalhost()}:${port}`
+      ])
+    ]
+
   /**
    * cookie 配置
    */
@@ -93,20 +106,11 @@ module.exports = app => {
    */
   config.security = {
     // 关闭 CSRF 攻击防御（伪造用户请求向网站发起恶意请求）
-    // csrf: {
-    //   enable: false
-    // }
+    csrf: {
+      enable: false
+    }
   }
-  // 设置白名单
-  const port = 9001 // 前端端口，跟随实际情况修改
-  const domainWhiteList = [
-    ...new Set([
-      `http://127.0.0.1:${port}`,
-      `http://localhost:${port}`,
-      // 服务启动时尝试自动获取本机 IP 设置白名单
-      `http://${getLocalhost()}:${port}`
-    ])
-  ]
+
   config.security = { domainWhiteList }
   // 默认允许跨域，生产环境关闭此设置
   config.cors = {

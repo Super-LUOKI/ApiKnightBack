@@ -8,14 +8,54 @@ const version = [1, 0, 0]
 module.exports = {
   /**
    * 组装菜单树
+   * 
    * @param {array} data 菜单列表
    * @param {array} parentId 菜单所属的父级
    * @return {array} 组装好的菜单树
    */
+  /**
+    const menuItems = [
+      { id: 1, parentId: 0, name: 'Home', meta: '{"icon": "home"}' },
+      { id: 2, parentId: 1, name: 'About Us', meta: '{"icon": "info"}' },
+      { id: 3, parentId: 1, name: 'Services', meta: '{"icon": "settings"}' },
+      { id: 4, parentId: 0, name: 'Contact', meta: '{"icon": "phone"}' }
+    ]
+    toTreeData(menuItems)
+    [
+      {
+        "id": 1,
+        "parentId": 0,
+        "name": "Home",
+        "meta": { "icon": "home" },
+        "children": [
+          {
+            "id": 2,
+            "parentId": 1,
+            "name": "About Us",
+            "meta": { "icon": "info" },
+            "children": []
+          },
+          {
+            "id": 3,
+            "parentId": 1,
+            "name": "Services",
+            "meta": { "icon": "settings" },
+            "children": []
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "parentId": 0,
+        "name": "Contact",
+        "meta": { "icon": "phone" },
+        "children": []
+      }
+    ]
+   */
   toTreeData(data, parentId = 0) {
     if (data.length <= 0) {
-      return []
-    }
+      return []    }
     function traverse(id) {
       const res = []
       const items = data.filter(item => item.parentId === id)
